@@ -1,5 +1,10 @@
+from django.db.models.query import QuerySet
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import generics, serializers
+
+from .models import Product
+from .serializers import ProductSerializer
 
 # Create your views here.
 
@@ -15,3 +20,11 @@ class Base(APIView):
         ]
 
         return Response(routes)
+
+class ProductList(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+
+class ProductRetrive(generics.RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
