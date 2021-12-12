@@ -19,7 +19,7 @@ frontend/.env.test.local
 frontend/.env.production.local
 
 # database
-.sqlite3
+db.sqlite3
 
 frontend/npm-debug.log*
 frontend/yarn-debug.log*
