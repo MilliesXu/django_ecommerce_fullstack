@@ -1,21 +1,21 @@
-import React from "react";
-import { Row, Col } from "react-bootstrap";
-import Product from "../components/Product";
-import products from "../products";
+import React, { Component, Suspense } from "react";
+import { Row } from "react-bootstrap";
+import Product from "../components/products/Product";
+import Loader from "../components/partials/Loader";
 
-const HomeScreen = () => {
-  return (
-    <div>
-      <h1>Latest Products</h1>
-      <Row>
-        {products.map((product) => (
-          <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-            <Product product={product} />
-          </Col>
-        ))}
-      </Row>
-    </div>
-  );
-};
+class HomeScreen extends Component {
+  render() {
+    return (
+      <div>
+        <Suspense fallback={<Loader />}>
+          <h1>Latest Products</h1>
+          <Row>
+            <Product />
+          </Row>
+        </Suspense>
+      </div>
+    );
+  }
+}
 
 export default HomeScreen;
