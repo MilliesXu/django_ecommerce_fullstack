@@ -9,6 +9,7 @@ import store from "./components/store";
 import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import Alerts from "./components/partials/Alerts";
+import CartScreen from "./screens/CartScreen";
 
 const alertOptions = {
   timeout: 3000,
@@ -27,6 +28,8 @@ function App() {
               <Routes>
                 <Route exact path="/" element={<HomeScreen />} />
                 <Route path="/product/:id" element={<ProductScreen />} />
+                <Route path="/cart" element={<CartScreen />} />
+                <Route path="/cart/:id" element={<CartScreen />} />
               </Routes>
             </Container>
           </main>

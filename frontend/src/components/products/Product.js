@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from "react";
 import { Card, Col } from "react-bootstrap";
 import Rating from "./Rating";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
 import { productList } from "../../actions/productAction";
