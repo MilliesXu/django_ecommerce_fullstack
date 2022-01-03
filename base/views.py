@@ -4,9 +4,14 @@ from rest_framework.response import Response
 from rest_framework import generics, serializers
 
 from .models import Product
-from .serializers import ProductSerializer
+from .serializers import MyTokenObtainPairSerializer, ProductSerializer
+
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 # Create your views here.
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
 
 class Base(APIView):
