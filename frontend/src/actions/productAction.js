@@ -1,5 +1,4 @@
-import { PRODUCT_LIST_SUCCESS, PRODUCT_DETAIL_SUCCESS } from "./types";
-import { returnErrors } from "./messages";
+import { PRODUCT_LIST_SUCCESS, PRODUCT_DETAIL_SUCCESS, ERROR } from "./types";
 import axios from "axios";
 
 export const productList = () => async (dispatch) => {
@@ -11,7 +10,14 @@ export const productList = () => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
-    dispatch(returnErrors(error.response.data, error.response.status));
+    console.log(error);
+    dispatch({
+      type: ERROR,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
   }
 };
 
@@ -24,6 +30,12 @@ export const productDetail = (id) => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
-    dispatch(returnErrors(error.response.data, error.response.status));
+    dispatch({
+      type: ERROR,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
   }
 };

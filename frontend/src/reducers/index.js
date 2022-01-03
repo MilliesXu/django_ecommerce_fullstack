@@ -1,12 +1,12 @@
 import { combineReducers } from "redux";
 
 import { productListReducer, productDetailReducer } from "./ProductReducer";
-import errorReducer from "./errorReducer";
-import messageReducer from "./messageReducer";
+import { cartReducer } from "./cartReducer";
+import { errorReducer } from "./errorReducer";
 
 export default combineReducers({
   productListReducer,
   productDetailReducer,
+  cartReducer,
   errorReducer,
-  messageReducer,
 });

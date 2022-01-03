@@ -6,36 +6,25 @@ import ProductScreen from "./screens/ProductScreen";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./components/store";
-import { Provider as AlertProvider } from "react-alert";
-import AlertTemplate from "react-alert-template-basic";
-import Alerts from "./components/partials/Alerts";
 import CartScreen from "./screens/CartScreen";
-
-const alertOptions = {
-  timeout: 3000,
-  position: "top center",
-};
 
 function App() {
   return (
     <Provider store={store}>
-      <AlertProvider template={AlertTemplate} {...alertOptions}>
-        <Router>
-          <Header />
-          <Alerts />
-          <main>
-            <Container>
-              <Routes>
-                <Route exact path="/" element={<HomeScreen />} />
-                <Route path="/product/:id" element={<ProductScreen />} />
-                <Route path="/cart" element={<CartScreen />} />
-                <Route path="/cart/:id" element={<CartScreen />} />
-              </Routes>
-            </Container>
-          </main>
-          <Footer />
-        </Router>
-      </AlertProvider>
+      <Router>
+        <Header />
+        <main>
+          <Container>
+            <Routes>
+              <Route exact path="/" element={<HomeScreen />} />
+              <Route path="/product/:id" element={<ProductScreen />} />
+              <Route path="/cart" element={<CartScreen />} />
+              <Route path="/cart/:id" element={<CartScreen />} />
+            </Routes>
+          </Container>
+        </main>
+        <Footer />
+      </Router>
     </Provider>
   );
 }
