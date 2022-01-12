@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'base.apps.BaseConfig',
+    'product.apps.ProductConfig',
+    'user.apps.UserConfig',
+    'order.apps.OrderConfig',
 ]
 
 MIDDLEWARE = [
@@ -172,7 +175,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-AUTH_USER_MODEL = 'base.ExtendUser'
+AUTH_USER_MODEL = 'user.ExtendUser'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static'

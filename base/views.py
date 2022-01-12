@@ -1,22 +1,11 @@
-from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import generics, status
-from django.contrib.auth.hashers import make_password
-
-from .models import Product, ExtendUser
-from .serializers import MyTokenObtainPairSerializer, ProductSerializer, UserSerializer, UserSerializerWithToken
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-
-from rest_framework_simplejwt.views import TokenObtainPairView
-
 # Create your views here.
 
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
-
 class Base(APIView):
-    def get(self, request, format=None):
+    permission_classes = []
+
+    def get(self, sender, **kwargs):
         routes = [
             'GET /api/products/',
             'GET /api/products/<id>',
@@ -26,45 +15,3 @@ class Base(APIView):
         ]
 
         return Response(routes)
-
-class ProductList(generics.ListAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-
-class ProductRetrive(generics.RetrieveAPIView):
-    queryset = Product.objects.all()
-    serializer_class = ProductSerializer
-
-class UserList(generics.ListAPIView):
-    permission_classes = [IsAdminUser]
-
-    queryset = ExtendUser.objects.all()
-    serializer_class = UserSerializer
-
-class UserProfile(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        user = request.user
-        serializer = UserSerializer(user, many=False)
-        return Response(serializer.data)
-
-class UserRegister(APIView):
-    permission_classes = []
-
-    def post(self, request):
-        data = request.data
-
-        try:
-            user = ExtendUser.objects.create(
-                first_name = data['name'],
-                username = data['email'],
-                email = data['email'],
-                password = make_password(data['password'])
-            )
-            serializer = UserSerializerWithToken(user, many=False)
-            return Response(serializer.data)
-        except:
-            message = {'detail': 'User with this email is already exist'}
-
-            return Response(message, status=status.HTTP_400_BAD_REQUEST)
