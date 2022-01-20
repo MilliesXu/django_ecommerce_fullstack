@@ -13,7 +13,7 @@ const HomeScreen = () => {
 
   useEffect(() => {
     dispatch(productList());
-  }, [dispatch, errors, products]);
+  }, [dispatch]);
 
   return (
     <div>

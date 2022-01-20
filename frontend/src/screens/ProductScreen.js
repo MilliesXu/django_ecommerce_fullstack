@@ -55,7 +55,7 @@ const ProductScreen = () => {
                 <ListGroup.Item>
                   <Rating
                     value={product.rating}
-                    text={`${product.numReviews} reviews`}
+                    text={`${product.num_reviews} reviews`}
                     color={"#f8e825"}
                   />
                 </ListGroup.Item>
