@@ -28,6 +28,26 @@ class UserProfile(APIView):
         serializer = UserSerializer(user, many=False)
         return Response(serializer.data)
 
+    def put(self, request):
+        user = request.user
+        serializer = UserSerializerWithToken(user, many=False)
+
+        data = request.data
+
+        try:
+            user.first_name = data['name']
+            user.username = data['email']
+            user.email = data['email']
+
+            if data['password'] != '':
+                user.password = make_password(data['password'])
+        except:
+            message = {'detail': 'User with this email is already exist'}
+
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(serializer.data)
+
 class UserRegister(APIView):
     permission_classes = []
 
