@@ -1,4 +1,8 @@
-import { USER_LOGIN_SUCCESS, USER_LOGIN_LOGOUT } from "../actions/types";
+import {
+  USER_LOGIN_SUCCESS,
+  USER_LOGOUT_SUCCESS,
+  USER_REGISTRATION_SUCCESS,
+} from "../actions/types";
 
 export function userReducer(state = {}, action) {
   switch (action.type) {
@@ -7,7 +11,12 @@ export function userReducer(state = {}, action) {
         ...state,
         userInfo: action.payload,
       };
-    case USER_LOGIN_LOGOUT:
+    case USER_REGISTRATION_SUCCESS:
+      return {
+        ...state,
+        userInfo: action.payload,
+      };
+    case USER_LOGOUT_SUCCESS:
       return {};
     default:
       return state;

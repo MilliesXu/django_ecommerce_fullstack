@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import store from "./components/store";
 import CartScreen from "./screens/CartScreen";
 import LoginScreen from "./screens/LoginScreen";
+import RegisterScreen from "./screens/RegisterScreen";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path="/cart" element={<CartScreen />} />
               <Route path="/cart/:id" element={<CartScreen />} />
               <Route path="/login" element={<LoginScreen />} />
+              <Route path="/register" element={<RegisterScreen />} />
             </Routes>
           </Container>
         </main>
