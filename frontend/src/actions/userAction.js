@@ -3,6 +3,7 @@ import {
   ERROR,
   USER_LOGOUT_SUCCESS,
   USER_REGISTRATION_SUCCESS,
+  USER_DETAILS_SUCCESS,
 } from "../actions/types";
 import axios from "axios";
 
@@ -85,4 +86,34 @@ export const logout = () => async (dispatch) => {
   dispatch({
     type: USER_LOGOUT_SUCCESS,
   });
+};
+
+export const getUserDetails = (id) => async (dispatch, getState) => {
+  try {
+    const {
+      userReducer: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/users/${id}`, config);
+
+    dispatch({
+      type: USER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ERROR,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
 };
