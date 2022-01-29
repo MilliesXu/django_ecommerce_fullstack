@@ -3,6 +3,9 @@ import {
   USER_LOGOUT_SUCCESS,
   USER_REGISTRATION_SUCCESS,
   USER_DETAILS_SUCCESS,
+  USER_DETAILS_LOGOUT_SUCCESS,
+  USER_UPDATE_PROFILE_SUCCESS,
+  USER_UPDATE_PROFILE_RESET,
 } from "../actions/types";
 
 export function userReducer(state = {}, action) {
@@ -31,6 +34,23 @@ export function userDetailsReducer(state = { user: {} }, action) {
         ...state,
         user: action.payload,
       };
+    case USER_DETAILS_LOGOUT_SUCCESS:
+      return {};
+    default:
+      return state;
+  }
+}
+
+export function userUpdateProfileReducer(state = {}, action) {
+  switch (action.type) {
+    case USER_UPDATE_PROFILE_SUCCESS:
+      return {
+        ...state,
+        success: true,
+        user: action.payload,
+      };
+    case USER_UPDATE_PROFILE_RESET:
+      return {};
     default:
       return state;
   }

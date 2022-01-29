@@ -41,6 +41,8 @@ class UserProfile(APIView):
 
             if data['password'] != '':
                 user.password = make_password(data['password'])
+
+            user.save()
         except:
             message = {'detail': 'User with this email is already exist'}
 
