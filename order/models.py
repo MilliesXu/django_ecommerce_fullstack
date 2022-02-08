@@ -15,7 +15,7 @@ class Order(models.Model):
     delivered_at = models.DateTimeField(auto_now_add=False, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self) -> str:
         return str(self.created_at)
@@ -27,7 +27,7 @@ class OrderItem(models.Model):
     qty = models.IntegerField(null=True, blank=True, default=0)
     price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
     image = models.CharField(max_length=200, null=True, blank=True)
-    _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self) -> str:
         return self.name
@@ -39,7 +39,7 @@ class ShippingAddress(models.Model):
     postal_code =  models.CharField(max_length=200, null=True, blank=True)
     country =  models.CharField(max_length=200, null=True, blank=True)
     shipping_price = models.DecimalField(max_digits=7, decimal_places=2, null=True, blank=True)
-    _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self) -> str:
         return self.address

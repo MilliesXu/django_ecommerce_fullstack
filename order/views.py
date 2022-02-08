@@ -37,7 +37,7 @@ class OrderView(APIView):
                 order = order,
                 address = data['shipping_address']['address'],
                 city = data['shipping_address']['city'],
-                postal_code = data['shipping_address']['postal_code'],
+                postal_code = data['shipping_address']['postalCode'],
                 country = data['shipping_address']['country'],
             )
 
@@ -55,7 +55,7 @@ class OrderView(APIView):
                 )
 
                 # Update Stock
-                product.countInStock -= item.qty
+                product.count_in_stock -= item.qty
                 product.save()
 
         serializer = OrderSerializer(order, many=False)

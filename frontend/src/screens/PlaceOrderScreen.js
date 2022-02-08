@@ -1,22 +1,16 @@
-import React, { useState, Suspense } from "react";
-import {
-  Form,
-  Button,
-  Row,
-  Col,
-  ListGroup,
-  Image,
-  Card,
-} from "react-bootstrap";
+import React, { useEffect, Suspense } from "react";
+import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../components/partials/Loader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CheckoutSteps from "../components/partials/CheckoutSteps";
 import Message from "../components/partials/Message";
-import { ERROR } from "../actions/types";
+import { createOrder } from "../actions/orderAction";
+import { ORDER_CREATE_RESET } from "../actions/types";
 
 const PlaceOrderScreen = () => {
   const cart = useSelector((state) => state.cartReducer);
+  const dispatch = useDispatch();
   cart.itemsPrice = cart.cartItems
     .reduce((acc, item) => acc + item.price * item.qty, 0)
     .toFixed(2);
@@ -27,9 +21,38 @@ const PlaceOrderScreen = () => {
     Number(cart.shippingPrice) +
     Number(cart.taxPrice)
   ).toFixed(2);
+  const orderReducer = useSelector((state) => state.orderReducer);
+  const { order, success } = orderReducer;
+  const { errors } = useSelector((state) => state.errorReducer);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (success === true) {
+      navigate(`/order/${order.id}`);
+      dispatch({
+        type: ORDER_CREATE_RESET,
+      });
+    }
+  }, [navigate, order, order.id, success, dispatch]);
+
   const placeOrderHandler = () => {
-    console.log("Place Order");
+    dispatch(
+      createOrder({
+        order_items: cart.cartItems,
+        shipping_address: cart.shippingAddress,
+        payment_method: cart.paymentMethod,
+        item_price: cart.itemsPrice,
+        shipping_price: cart.shippingPrice,
+        tax_price: cart.taxPrice,
+        total_price: cart.totalPrice,
+      })
+    );
   };
+
+  if (!cart.paymentMethod) {
+    navigate("/payment");
+  }
+
   return (
     <Suspense fallback={<Loader />}>
       <CheckoutSteps step1 step2 step3 step4 />
@@ -127,6 +150,12 @@ const PlaceOrderScreen = () => {
                   <Col>Total Price</Col>
                   <Col>${cart.totalPrice}</Col>
                 </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                {errors.length > 0 && (
+                  <Message variant="danger">{errors.message}</Message>
+                )}
               </ListGroup.Item>
 
               <ListGroup.Item>

@@ -7,12 +7,12 @@ const Product = ({ product }) => {
   return (
     <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
       <Card className="my-3 p-3 rounded">
-        <Link to={`/product/${product._id}`}>
+        <Link to={`/product/${product.id}`}>
           <Card.Img src={product.image} />
         </Link>
 
         <Card.Body>
-          <Link to={`/product/${product._id}`}>
+          <Link to={`/product/${product.id}`}>
             <Card.Title>
               <strong>{product.name}</strong>
             </Card.Title>

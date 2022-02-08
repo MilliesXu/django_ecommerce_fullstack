@@ -29,14 +29,14 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_shipping_address(self, obj):
         try:
-            shipping_address = ShippingAddressSerializer(obj.shippingaddress, many=False)
+            shipping_address = ShippingAddressSerializer(obj.shipping_address, many=False)
         except:
             shipping_address = False
         
         return shipping_address
 
     def get_user(self, obj):
-        user = UserSerializer(obj.user, many=False)
+        serializer = UserSerializer(obj.user, many=False)
 
-        return user
+        return serializer.data
 
