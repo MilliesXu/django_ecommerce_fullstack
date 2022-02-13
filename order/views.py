@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Order, OrderItem, ShippingAddress
 from .serializers import OrderSerializer
 from product.models import Product
+import uuid
 
 # Create your views here.
 class OrderView(APIView):
@@ -60,3 +61,25 @@ class OrderView(APIView):
 
         serializer = OrderSerializer(order, many=False)
         return Response(serializer.data)
+
+class OrderDetail(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pk):
+        user = request.user
+
+        try:
+            order = Order.objects.get(id=pk)
+
+            if user.is_staff or order.user == user:
+                serializer = OrderSerializer(order, many=False)
+                return Response(serializer.data)
+            else:
+                message = {'detail': 'Not authenticated'}
+
+                return Response(message, status=status.HTTP_401_UNAUTHORIZED)
+
+        except:
+            message = {'detail': 'Order does not exist'}
+
+            return Response(message, status=status.HTTP_404_NOT_FOUND)
