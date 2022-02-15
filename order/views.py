@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Order, OrderItem, ShippingAddress
 from .serializers import OrderSerializer
 from product.models import Product
-import datetime
+from datetime import datetime
 
 # Create your views here.
 class OrderView(APIView):
@@ -84,7 +84,7 @@ class OrderDetail(APIView):
 
             return Response(message, status=status.HTTP_404_NOT_FOUND)
 
-    def put(self, pk):
+    def put(self, request, pk):
         order = Order.objects.get(id=pk)
 
         order.is_paid = True
