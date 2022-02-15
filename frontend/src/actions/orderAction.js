@@ -3,6 +3,8 @@ import {
   ERROR,
   CART_CLEAR_ITEM,
   ORDER_DETAIL_SUCCESS,
+  ORDER_PAY_SUCCESS,
+  ORDER_PAY_RESET,
 } from "./types";
 import axios from "axios";
 
@@ -58,6 +60,37 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
 
     dispatch({
       type: ORDER_DETAIL_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: ERROR,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
+  try {
+    const {
+      userReducer: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/orders/${id}`, config);
+
+    dispatch({
+      type: ORDER_PAY_SUCCESS,
       payload: data,
     });
   } catch (error) {
