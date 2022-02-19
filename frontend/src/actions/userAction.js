@@ -6,6 +6,7 @@ import {
   USER_DETAILS_SUCCESS,
   USER_DETAILS_LOGOUT_SUCCESS,
   USER_UPDATE_PROFILE_SUCCESS,
+  ORDER_LIST_RESET,
 } from "../actions/types";
 import axios from "axios";
 
@@ -90,6 +91,9 @@ export const logout = () => async (dispatch) => {
   });
   dispatch({
     type: USER_DETAILS_LOGOUT_SUCCESS,
+  });
+  dispatch({
+    type: ORDER_LIST_RESET,
   });
 };
 

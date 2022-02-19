@@ -38,9 +38,7 @@ const OrderScreen = () => {
     });
     dispatch(getOrderDetails(id));
     if (!order.is_paid) {
-      if (!window.paypal) {
-        addPaypalScript();
-      }
+      addPaypalScript();
     }
   }, [id, dispatch, success, order.is_paid]);
 
@@ -81,7 +79,7 @@ const OrderScreen = () => {
 
                   {order.is_delivered ? (
                     <Message variant="success">
-                      Delivered at {order.delivered_at}
+                      Delivered at {order.delivered_at.substring(0, 10)}
                     </Message>
                   ) : (
                     <Message variant="warning">Not Delivered</Message>
@@ -96,7 +94,9 @@ const OrderScreen = () => {
                     {order.paymentMethod}
                   </p>
                   {order.is_paid ? (
-                    <Message variant="success">Paid on {order.paid_at}</Message>
+                    <Message variant="success">
+                      Paid on {order.paid_at.substring(0, 10)}
+                    </Message>
                   ) : (
                     <Message variant="warning">Not Paid</Message>
                   )}
