@@ -20,6 +20,12 @@ class UserList(generics.ListAPIView):
     queryset = ExtendUser.objects.all()
     serializer_class = UserSerializer
 
+class UserDelete(generics.DestroyAPIView):
+    permission_classes = [IsAdminUser]
+
+    queryset = ExtendUser.objects.all()
+    serializer_class = UserSerializer
+
 class UserProfile(APIView):
     permission_classes = [IsAuthenticated]
 

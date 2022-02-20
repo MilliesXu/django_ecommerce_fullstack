@@ -8,6 +8,7 @@ import {
   USER_UPDATE_PROFILE_RESET,
   USER_LIST_RESET,
   USER_LIST_SUCCESS,
+  USER_DELETE_SUCCESS,
 } from "../actions/types";
 
 export function userReducer(state = {}, action) {
@@ -67,6 +68,18 @@ export function userListReducer(state = { users: [] }, action) {
       };
     case USER_LIST_RESET:
       return { users: [] };
+    default:
+      return state;
+  }
+}
+
+export function userDeleteReducer(state = {}, action) {
+  switch (action.type) {
+    case USER_DELETE_SUCCESS:
+      return {
+        ...state,
+        success: true,
+      };
     default:
       return state;
   }

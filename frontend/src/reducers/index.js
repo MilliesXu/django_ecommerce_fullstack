@@ -6,6 +6,7 @@ import {
   userDetailsReducer,
   userUpdateProfileReducer,
   userListReducer,
+  userDeleteReducer,
 } from "./userReducer";
 import { cartReducer } from "./cartReducer";
 import { errorReducer } from "./errorReducer";
@@ -25,6 +26,7 @@ export default combineReducers({
   userDetailsReducer,
   userUpdateProfileReducer,
   userListReducer,
+  userDeleteReducer,
   orderReducer,
   orderDetailReducer,
   orderPayReducer,
