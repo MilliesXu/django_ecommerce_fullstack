@@ -6,6 +6,8 @@ import {
   USER_DETAILS_LOGOUT_SUCCESS,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_RESET,
+  USER_LIST_RESET,
+  USER_LIST_SUCCESS,
 } from "../actions/types";
 
 export function userReducer(state = {}, action) {
@@ -51,6 +53,20 @@ export function userUpdateProfileReducer(state = {}, action) {
       };
     case USER_UPDATE_PROFILE_RESET:
       return {};
+    default:
+      return state;
+  }
+}
+
+export function userListReducer(state = { users: [] }, action) {
+  switch (action.type) {
+    case USER_LIST_SUCCESS:
+      return {
+        ...state,
+        users: action.payload,
+      };
+    case USER_LIST_RESET:
+      return { users: [] };
     default:
       return state;
   }

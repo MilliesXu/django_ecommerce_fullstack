@@ -6,6 +6,8 @@ import {
   USER_DETAILS_SUCCESS,
   USER_DETAILS_LOGOUT_SUCCESS,
   USER_UPDATE_PROFILE_SUCCESS,
+  USER_LIST_SUCCESS,
+  USER_LIST_RESET,
   ORDER_LIST_RESET,
 } from "../actions/types";
 import axios from "axios";
@@ -71,8 +73,6 @@ export const register = (name, email, password) => async (dispatch) => {
       type: USER_LOGIN_SUCCESS,
       payload: data,
     });
-
-    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: ERROR,
@@ -94,6 +94,9 @@ export const logout = () => async (dispatch) => {
   });
   dispatch({
     type: ORDER_LIST_RESET,
+  });
+  dispatch({
+    type: USER_LIST_RESET,
   });
 };
 
@@ -149,6 +152,36 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ERROR,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const getListUsers = () => async (dispatch, getState) => {
+  try {
+    const {
+      userReducer: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/users/`, config);
+
+    dispatch({
+      type: USER_LIST_SUCCESS,
       payload: data,
     });
   } catch (error) {
