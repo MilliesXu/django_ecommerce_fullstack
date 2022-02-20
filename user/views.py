@@ -20,11 +20,23 @@ class UserList(generics.ListAPIView):
     queryset = ExtendUser.objects.all()
     serializer_class = UserSerializer
 
-class UserDelete(generics.DestroyAPIView):
+class UserRetrieveUpdateDelete(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminUser]
 
     queryset = ExtendUser.objects.all()
     serializer_class = UserSerializer
+    lookup_field = 'pk'
+
+    # def update(self, request, *args, **kwargs):
+    #     instance = self.get_object()
+    #     serializer = self.get_serializer(instance, data=request.data, partial=True)
+
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response({"message": "mobile number updated successfully"})
+
+    #     else:
+    #         return Response({"message": "failed", "details": serializer.errors})
 
 class UserProfile(APIView):
     permission_classes = [IsAuthenticated]
