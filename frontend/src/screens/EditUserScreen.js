@@ -1,37 +1,60 @@
 import React, { useState, useEffect, Suspense } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import Message from "../components/partials/Message";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserDetails } from "../actions/userAction";
+import { getUserDetails, updateUser } from "../actions/userAction";
 import FormContainer from "../components/partials/FormContainer";
 import Loader from "../components/partials/Loader";
-import { ERROR } from "../actions/types";
+import { USER_UPDATE_RESET } from "../actions/types";
 
 const EditUserScreen = () => {
   const { id } = useParams();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userDetailsReducer = useSelector((state) => state.userDetailsReducer);
   const { user } = userDetailsReducer;
+  const userUpdateReducer = useSelector((state) => state.userUpdateReducer);
+  const { success: successUpdate } = userUpdateReducer;
   const { errors } = useSelector((state) => state.errorReducer);
 
   const submitHandler = (e) => {
     e.preventDefault();
+
+    dispatch(
+      updateUser(
+        {
+          id: id,
+          username: email,
+          email: email,
+          name: name,
+          first_name: name,
+          is_admin: isAdmin,
+        },
+        id
+      )
+    );
+    navigate(`/admin/user/${id}/`);
   };
 
   useEffect(() => {
-    if (!user.name || user.id !== id) {
-      dispatch(getUserDetails(id));
+    if (successUpdate) {
+      dispatch({
+        type: USER_UPDATE_RESET,
+      });
     } else {
-      setName(user.name);
-      setEmail(user.email);
-      setIsAdmin(user.is_admin);
+      if (!user.name || user.id !== id) {
+        dispatch(getUserDetails(id));
+      } else {
+        setName(user.name);
+        setEmail(user.email);
+        setIsAdmin(user.is_admin);
+      }
     }
-  }, [user, id, dispatch]);
+  }, [user, id, dispatch, successUpdate]);
 
   return (
     <Suspense fallback={<Loader />}>

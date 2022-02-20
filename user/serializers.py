@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ExtendUser
-        fields = ['id', 'username', 'email', 'name', 'is_admin']
+        fields = ['id', 'username', 'email', 'name', 'first_name', 'is_admin']
 
     def get_name(self, obj):
         name = obj.first_name

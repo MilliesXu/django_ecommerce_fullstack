@@ -9,6 +9,7 @@ import {
   USER_LIST_SUCCESS,
   USER_LIST_RESET,
   USER_DELETE_SUCCESS,
+  USER_UPDATE_SUCCESS,
   ORDER_LIST_RESET,
 } from "../actions/types";
 import axios from "axios";
@@ -213,6 +214,41 @@ export const deleteUser = (id) => async (dispatch, getState) => {
 
     dispatch({
       type: USER_DELETE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ERROR,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const updateUser = (user, id) => async (dispatch, getState) => {
+  try {
+    const {
+      userReducer: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/users/${id}/`, user, config);
+
+    console.log(data, "data");
+
+    dispatch({
+      type: USER_UPDATE_SUCCESS,
+    });
+    dispatch({
+      type: USER_DETAILS_SUCCESS,
       payload: data,
     });
   } catch (error) {
