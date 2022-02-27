@@ -1,4 +1,8 @@
-import { PRODUCT_LIST_SUCCESS, PRODUCT_DETAIL_SUCCESS } from "../actions/types";
+import {
+  PRODUCT_LIST_SUCCESS,
+  PRODUCT_DETAIL_SUCCESS,
+  PRODUCT_DELETE_SUCCESS,
+} from "../actions/types";
 
 const initialState = {
   products: [],
@@ -25,6 +29,18 @@ export function productDetailReducer(
       return {
         ...state,
         product: action.payload,
+      };
+    default:
+      return state;
+  }
+}
+
+export function productDeleteReducer(state = {}, action) {
+  switch (action.type) {
+    case PRODUCT_DELETE_SUCCESS:
+      return {
+        ...state,
+        success: true,
       };
     default:
       return state;

@@ -4,7 +4,7 @@ import Loader from "../components/partials/Loader";
 import { Button, Table, Row, Col } from "react-bootstrap";
 import Message from "../components/partials/Message";
 import { useDispatch, useSelector } from "react-redux";
-import { productList } from "../actions/productAction";
+import { productList, productDelete } from "../actions/productAction";
 import { useNavigate } from "react-router-dom";
 
 const ProductListScreen = () => {
@@ -16,6 +16,10 @@ const ProductListScreen = () => {
   const { userInfo } = userReducer;
   const errorReducer = useSelector((state) => state.errorReducer);
   const { errors } = errorReducer;
+  const productDeleteReducer = useSelector(
+    (state) => state.productDeleteReducer
+  );
+  const { success } = productDeleteReducer;
 
   useEffect(() => {
     if (userInfo && userInfo.is_admin) {
@@ -23,11 +27,11 @@ const ProductListScreen = () => {
     } else {
       navigate("/login");
     }
-  }, [dispatch, userInfo, navigate]);
+  }, [dispatch, userInfo, navigate, success]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure you want to delete this product ?")) {
-      //   dispatch(deleteUser(id));
+      dispatch(productDelete(id));
     }
   };
 

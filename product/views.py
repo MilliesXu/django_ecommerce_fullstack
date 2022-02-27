@@ -2,6 +2,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework import generics
 from .models import Product
 from .serializers import ProductSerializer
+from .permissions import ProductPermission
 
 # Create your views here.
 
@@ -11,8 +12,8 @@ class ProductList(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-class ProductRetrive(generics.RetrieveAPIView):
-    permission_classes = [AllowAny]
+class ProductRetriveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [ProductPermission]
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer

@@ -1,6 +1,10 @@
 import { combineReducers } from "redux";
 
-import { productListReducer, productDetailReducer } from "./ProductReducer";
+import {
+  productListReducer,
+  productDetailReducer,
+  productDeleteReducer,
+} from "./ProductReducer";
 import {
   userReducer,
   userDetailsReducer,
@@ -21,6 +25,7 @@ import {
 export default combineReducers({
   productListReducer,
   productDetailReducer,
+  productDeleteReducer,
   cartReducer,
   errorReducer,
   userReducer,
