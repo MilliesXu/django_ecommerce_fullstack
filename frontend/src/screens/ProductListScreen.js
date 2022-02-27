@@ -4,8 +4,13 @@ import Loader from "../components/partials/Loader";
 import { Button, Table, Row, Col } from "react-bootstrap";
 import Message from "../components/partials/Message";
 import { useDispatch, useSelector } from "react-redux";
-import { productList, productDelete } from "../actions/productAction";
+import {
+  productList,
+  productDelete,
+  productCreate,
+} from "../actions/productAction";
 import { useNavigate } from "react-router-dom";
+import { PRODUCT_CREATE_RESET, PRODUCT_CREATE_SUCCESS } from "../actions/types";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
@@ -20,14 +25,26 @@ const ProductListScreen = () => {
     (state) => state.productDeleteReducer
   );
   const { success } = productDeleteReducer;
+  const productCreateReducer = useSelector(
+    (state) => state.productCreateReducer
+  );
+  const { success: createSuccess, product } = productCreateReducer;
 
   useEffect(() => {
+    dispatch({
+      type: PRODUCT_CREATE_RESET,
+    });
+
     if (userInfo && userInfo.is_admin) {
       dispatch(productList());
     } else {
       navigate("/login");
     }
-  }, [dispatch, userInfo, navigate, success]);
+
+    if (createSuccess) {
+      navigate(`/admin/products/${product?.id}/edit`);
+    }
+  }, [dispatch, userInfo, navigate, success, createSuccess, product]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure you want to delete this product ?")) {
@@ -36,7 +53,7 @@ const ProductListScreen = () => {
   };
 
   const createProductHandler = () => {
-    console.log("Add product");
+    dispatch(productCreate());
   };
 
   return (

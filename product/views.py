@@ -13,7 +13,17 @@ class ProductListCreate(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
 
     def post(self, request, *args, **kwargs):
-        args['user'] = request.user
+        user = request.user
+
+        request.data['user'] = user.id
+        request.data['name'] = 'Sample Name'
+        request.data['brand'] = 'Sample Brand'
+        request.data['category'] = 'Sample Category'
+        request.data['count_in_stock'] = 0
+        request.data['rating'] = 0.0
+        request.data['num_reviews'] = 0
+        request.data['price'] = 0.0
+        request.data['description'] = ''
 
         return super().post(request, *args, **kwargs)
 

@@ -2,6 +2,8 @@ import {
   PRODUCT_LIST_SUCCESS,
   PRODUCT_DETAIL_SUCCESS,
   PRODUCT_DELETE_SUCCESS,
+  PRODUCT_CREATE_SUCCESS,
+  PRODUCT_CREATE_RESET,
 } from "../actions/types";
 
 const initialState = {
@@ -42,6 +44,21 @@ export function productDeleteReducer(state = {}, action) {
         ...state,
         success: true,
       };
+    default:
+      return state;
+  }
+}
+
+export function productCreateReducer(state = {}, action) {
+  switch (action.type) {
+    case PRODUCT_CREATE_SUCCESS:
+      return {
+        ...state,
+        success: true,
+        product: action.payload,
+      };
+    case PRODUCT_CREATE_RESET:
+      return {};
     default:
       return state;
   }
