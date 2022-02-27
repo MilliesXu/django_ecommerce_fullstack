@@ -6,11 +6,16 @@ from .permissions import ProductPermission
 
 # Create your views here.
 
-class ProductList(generics.ListAPIView):
+class ProductListCreate(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+    def post(self, request, *args, **kwargs):
+        args['user'] = request.user
+
+        return super().post(request, *args, **kwargs)
 
 class ProductRetriveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [ProductPermission]
