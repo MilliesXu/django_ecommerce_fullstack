@@ -10,7 +10,7 @@ import {
   productCreate,
 } from "../actions/productAction";
 import { useNavigate } from "react-router-dom";
-import { PRODUCT_CREATE_RESET, PRODUCT_CREATE_SUCCESS } from "../actions/types";
+import { PRODUCT_CREATE_RESET } from "../actions/types";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
@@ -91,7 +91,7 @@ const ProductListScreen = () => {
                 <td>$.{product.price}</td>
                 <td>{product.category}</td>
                 <td>
-                  <LinkContainer to={`/admin/product/${product.id}/edit`}>
+                  <LinkContainer to={`/admin/products/${product.id}/edit`}>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit"></i>
                     </Button>

@@ -8,7 +8,7 @@ import FormContainer from "../components/partials/FormContainer";
 import Loader from "../components/partials/Loader";
 import { USER_UPDATE_RESET } from "../actions/types";
 
-const EditUserScreen = () => {
+const UserEditScreen = () => {
   const { id } = useParams();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -107,4 +107,4 @@ const EditUserScreen = () => {
   );
 };
 
-export default EditUserScreen;
+export default UserEditScreen;

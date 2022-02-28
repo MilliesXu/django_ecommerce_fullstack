@@ -3,9 +3,10 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import Message from "../components/partials/Message";
 import { useDispatch, useSelector } from "react-redux";
-import { productDetail } from "../actions/productAction";
+import { productDetail, productUpdate } from "../actions/productAction";
 import FormContainer from "../components/partials/FormContainer";
 import Loader from "../components/partials/Loader";
+import { PRODUCT_UPDATE_RESET } from "../actions/types";
 
 const ProductEditScreen = () => {
   const { id } = useParams();
@@ -19,29 +20,54 @@ const ProductEditScreen = () => {
   const dispatch = useDispatch();
   const errorReducer = useSelector((state) => state.errorReducer);
   const { errors } = errorReducer;
+  const navigate = useNavigate();
 
   const productDetailReducer = useSelector(
     (state) => state.productDetailReducer
   );
   const { product } = productDetailReducer;
-
-  useEffect(() => {
-    if (!product.name || product.id !== id) {
-      dispatch(productDetail(id));
-    } else {
-      setName(product.name);
-      setPrice(product.price);
-      setImage(product.image);
-      setBrand(product.brand);
-      setCategory(product.category);
-      setCountInStock(product.count_in_stock);
-      setDescription(product.description);
-    }
-  }, [product, dispatch, id]);
+  const productUpdateReducer = useSelector(
+    (state) => state.productUpdateReducer
+  );
+  const { success: successUpdate } = productUpdateReducer;
 
   const submitHandler = (e) => {
     e.preventDefault();
+    dispatch(
+      productUpdate(
+        {
+          name: name,
+          price: price,
+          brand: brand,
+          count_in_stock: countInStock,
+          category: category,
+          description: description,
+        },
+        id
+      )
+    );
   };
+
+  useEffect(() => {
+    if (successUpdate) {
+      dispatch({
+        type: PRODUCT_UPDATE_RESET,
+      });
+      navigate("/admin/productlist");
+    } else {
+      if (!product.name || product.id !== id) {
+        dispatch(productDetail(id));
+      } else {
+        setName(product.name);
+        setPrice(product.price);
+        setImage(product.image);
+        setBrand(product.brand);
+        setCategory(product.category);
+        setCountInStock(product.count_in_stock);
+        setDescription(product.description);
+      }
+    }
+  }, [product, dispatch, id, navigate, successUpdate]);
 
   return (
     <Suspense fallback={<Loader />}>

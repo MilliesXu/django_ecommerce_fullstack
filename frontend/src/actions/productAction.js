@@ -3,6 +3,7 @@ import {
   PRODUCT_DETAIL_SUCCESS,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_CREATE_SUCCESS,
+  PRODUCT_UPDATE_SUCCESS,
   ERROR,
 } from "./types";
 import axios from "axios";
@@ -89,10 +90,45 @@ export const productCreate = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post(`/api/products/`, config);
+    const { data } = await axios.post(`/api/products/`, {}, config);
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ERROR,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const productUpdate = (product, id) => async (dispatch, getState) => {
+  try {
+    const {
+      userReducer: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/products/${id}/`, product, config);
+
+    dispatch({
+      type: PRODUCT_UPDATE_SUCCESS,
+      payload: data,
+    });
+
+    dispatch({
+      type: PRODUCT_DETAIL_SUCCESS,
       payload: data,
     });
   } catch (error) {

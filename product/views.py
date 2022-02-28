@@ -1,4 +1,3 @@
-from rest_framework.permissions import AllowAny
 from rest_framework import generics
 from .models import Product
 from .serializers import ProductSerializer
@@ -7,7 +6,7 @@ from .permissions import ProductPermission
 # Create your views here.
 
 class ProductListCreate(generics.ListCreateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [ProductPermission]
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
