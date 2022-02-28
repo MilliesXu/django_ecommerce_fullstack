@@ -91,7 +91,7 @@ const ProductListScreen = () => {
                 <td>$.{product.price}</td>
                 <td>{product.category}</td>
                 <td>
-                  <LinkContainer to={`/admin/product/${product.id}`}>
+                  <LinkContainer to={`/admin/product/${product.id}/edit`}>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit"></i>
                     </Button>
