@@ -11,6 +11,7 @@ import {
   USER_DELETE_SUCCESS,
   USER_UPDATE_SUCCESS,
   ORDER_LIST_RESET,
+  ORDER_LIST_ADMIN_RESET,
 } from "../actions/types";
 import axios from "axios";
 
@@ -99,6 +100,9 @@ export const logout = () => async (dispatch) => {
   });
   dispatch({
     type: USER_LIST_RESET,
+  });
+  dispatch({
+    type: ORDER_LIST_ADMIN_RESET,
   });
 };
 

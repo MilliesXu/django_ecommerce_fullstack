@@ -6,6 +6,8 @@ import {
   ORDER_PAY_RESET,
   ORDER_LIST_SUCCESS,
   ORDER_LIST_RESET,
+  ORDER_LIST_ADMIN_SUCCESS,
+  ORDER_LIST_ADMIN_RESET,
 } from "../actions/types";
 
 export function orderReducer(state = { order: {} }, action) {
@@ -57,11 +59,13 @@ export function orderPayReducer(state = {}, action) {
 export function orderListReducer(state = { orders: [] }, action) {
   switch (action.type) {
     case ORDER_LIST_SUCCESS:
+    case ORDER_LIST_ADMIN_SUCCESS:
       return {
         ...state,
         orders: action.payload,
       };
     case ORDER_LIST_RESET:
+    case ORDER_LIST_ADMIN_RESET:
       return {
         orders: [],
       };

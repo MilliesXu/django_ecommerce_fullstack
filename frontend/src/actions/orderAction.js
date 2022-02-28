@@ -5,6 +5,7 @@ import {
   ORDER_DETAIL_SUCCESS,
   ORDER_PAY_SUCCESS,
   ORDER_LIST_SUCCESS,
+  ORDER_LIST_ADMIN_SUCCESS,
 } from "./types";
 import axios from "axios";
 
@@ -124,10 +125,17 @@ export const getListOrders = () => async (dispatch, getState) => {
 
     const { data } = await axios.get(`/api/orders/`, config);
 
-    dispatch({
-      type: ORDER_LIST_SUCCESS,
-      payload: data,
-    });
+    if (userInfo.is_admin) {
+      dispatch({
+        type: ORDER_LIST_ADMIN_SUCCESS,
+        payload: data,
+      });
+    } else {
+      dispatch({
+        type: ORDER_LIST_SUCCESS,
+        payload: data,
+      });
+    }
   } catch (error) {
     console.log(error);
     dispatch({

@@ -64,7 +64,12 @@ class OrderView(APIView):
 
     def get(self, request):
         user = request.user
-        orders = user.order_set.all()
+
+        # Check if user is staff
+        if user.is_staff:
+            orders = Order.objects.all()
+        else:
+            orders = user.order_set.all()
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
 
