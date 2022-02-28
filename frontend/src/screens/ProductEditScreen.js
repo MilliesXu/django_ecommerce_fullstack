@@ -33,19 +33,18 @@ const ProductEditScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(
-      productUpdate(
-        {
-          name: name,
-          price: price,
-          brand: brand,
-          count_in_stock: countInStock,
-          category: category,
-          description: description,
-        },
-        id
-      )
-    );
+
+    const formData = new FormData();
+
+    if (typeof image !== "string") formData.append("image", image);
+    formData.append("name", name);
+    formData.append("price", price);
+    formData.append("brand", brand);
+    formData.append("count_in_stock", countInStock);
+    formData.append("category", category);
+    formData.append("description", description);
+
+    dispatch(productUpdate(formData, id));
   };
 
   useEffect(() => {
@@ -102,10 +101,9 @@ const ProductEditScreen = () => {
               <Form.Group controlId="image">
                 <Form.Label>Image</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="file"
                   placeholder="Enter Image"
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
+                  onChange={(e) => setImage(e.target.files[0])}
                 ></Form.Control>
               </Form.Group>
               <Form.Group controlId="brand">
