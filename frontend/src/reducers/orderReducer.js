@@ -4,6 +4,8 @@ import {
   ORDER_DETAIL_SUCCESS,
   ORDER_PAY_SUCCESS,
   ORDER_PAY_RESET,
+  ORDER_DELIVER_SUCCESS,
+  ORDER_DELIVER_RESET,
   ORDER_LIST_SUCCESS,
   ORDER_LIST_RESET,
   ORDER_LIST_ADMIN_SUCCESS,
@@ -50,6 +52,20 @@ export function orderPayReducer(state = {}, action) {
         success: true,
       };
     case ORDER_PAY_RESET:
+      return {};
+    default:
+      return state;
+  }
+}
+
+export function orderDeliverReducer(state = {}, action) {
+  switch (action.type) {
+    case ORDER_DELIVER_SUCCESS:
+      return {
+        ...state,
+        success: true,
+      };
+    case ORDER_DELIVER_RESET:
       return {};
     default:
       return state;
