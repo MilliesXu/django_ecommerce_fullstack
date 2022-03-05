@@ -62,7 +62,15 @@ const OrderScreen = () => {
     if (!order.is_paid) {
       addPaypalScript();
     }
-  }, [id, dispatch, order.is_paid, successDeliver, success]);
+  }, [
+    id,
+    dispatch,
+    order.is_paid,
+    successDeliver,
+    success,
+    userInfo,
+    navigate,
+  ]);
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(id, paymentResult));

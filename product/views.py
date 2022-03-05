@@ -1,7 +1,8 @@
-from rest_framework import generics
-from .models import Product
-from .serializers import ProductSerializer
-from .permissions import ProductPermission
+from rest_framework import generics, status
+from .models import Product, Review
+from .serializers import ProductSerializer, ReviewSerializer
+from .permissions import ProductPermission, ReviewPermission
+from rest_framework.response import Response
 
 # Create your views here.
 
@@ -31,3 +32,41 @@ class ProductRetriveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+class ReviewListCreate(generics.ListCreateAPIView):
+    permission_classes = [ReviewPermission]
+
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+    def post(self, request, *args, **kwargs):
+
+        user = request.user
+        product = Product.objects.get(id=request.data['product'])
+        request.data['user'] = user.id
+
+        # Review already exist
+        is_exist = product.review_set.filter(user=user).exists()
+
+        if is_exist:
+            content = {'details': 'Product already reviews'}
+            return Response(content, status.HTTP_400_BAD_REQUEST)
+
+        # No rating
+        elif request.data['rating'] == 0:
+            content = {'detail', 'Please select a rating'}
+            return Response(content, status.HTTP_400_BAD_REQUEST)
+
+        super().post(request, *args, **kwargs)
+
+        reviews = product.review_set.all()
+        product.num_reviews = len(reviews)
+
+        total = 0
+        for review in reviews:
+            total += review.rating
+
+        product.rating = total / len(reviews)
+        product.save()
+
+        return Response({'detail': 'Review Added'}, status.HTTP_200_OK)
