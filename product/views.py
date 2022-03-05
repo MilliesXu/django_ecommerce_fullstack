@@ -44,12 +44,13 @@ class ReviewListCreate(generics.ListCreateAPIView):
         user = request.user
         product = Product.objects.get(id=request.data['product'])
         request.data['user'] = user.id
+        request.data['name'] = user.first_name
 
         # Review already exist
         is_exist = product.review_set.filter(user=user).exists()
 
         if is_exist:
-            content = {'details': 'Product already reviews'}
+            content = {'detail': 'Product already reviews'}
             return Response(content, status.HTTP_400_BAD_REQUEST)
 
         # No rating

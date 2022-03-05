@@ -6,6 +6,8 @@ import {
   PRODUCT_CREATE_RESET,
   PRODUCT_UPDATE_RESET,
   PRODUCT_UPDATE_SUCCESS,
+  PRODUCT_CREATE_REVIEW_SUCCESS,
+  PRODUCT_CREATE_REVIEW_RESET,
 } from "../actions/types";
 
 const initialState = {
@@ -75,6 +77,20 @@ export function productUpdateReducer(state = { product: {} }, action) {
         product: action.payload,
       };
     case PRODUCT_UPDATE_RESET:
+      return { product: {} };
+    default:
+      return state;
+  }
+}
+
+export function productCreateReviewReducer(state = {}, action) {
+  switch (action.type) {
+    case PRODUCT_CREATE_REVIEW_SUCCESS:
+      return {
+        ...state,
+        success: true,
+      };
+    case PRODUCT_CREATE_REVIEW_RESET:
       return { product: {} };
     default:
       return state;

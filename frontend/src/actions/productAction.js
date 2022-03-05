@@ -4,6 +4,7 @@ import {
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_CREATE_SUCCESS,
   PRODUCT_UPDATE_SUCCESS,
+  PRODUCT_CREATE_REVIEW_SUCCESS,
   ERROR,
 } from "./types";
 import axios from "axios";
@@ -129,6 +130,36 @@ export const productUpdate = (product, id) => async (dispatch, getState) => {
 
     dispatch({
       type: PRODUCT_DETAIL_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ERROR,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
+
+export const productCreateReview = (review) => async (dispatch, getState) => {
+  try {
+    const {
+      userReducer: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.post(`/api/products/reviews/`, review, config);
+
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_SUCCESS,
       payload: data,
     });
   } catch (error) {
