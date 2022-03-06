@@ -12,6 +12,17 @@ class ProductListCreate(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+    def get_queryset(self):
+        query = self.request.query_params.get('keyword')
+        print(query)
+
+        if query != None:
+            products = Product.objects.filter(name__icontains=query)
+        else:
+            products = Product.objects.all()
+
+        return products
+
     def post(self, request, *args, **kwargs):
         user = request.user
 
