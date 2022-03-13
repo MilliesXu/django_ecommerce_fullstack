@@ -3,13 +3,16 @@ import { Row } from "react-bootstrap";
 import Product from "../components/products/Product";
 import Loader from "../components/partials/Loader";
 import Message from "../components/partials/Message";
+import Paginate from "../components/partials/Paginate";
 import { useSelector, useDispatch } from "react-redux";
 import { productList } from "../actions/productAction";
 import { useLocation } from "react-router-dom";
 
 const HomeScreen = () => {
   const { errors } = useSelector((state) => state.errorReducer);
-  const { products } = useSelector((state) => state.productListReducer);
+  const { products, page, pages } = useSelector(
+    (state) => state.productListReducer
+  );
   const dispatch = useDispatch();
   const location = useLocation();
   let keyword = location.search;
@@ -26,11 +29,14 @@ const HomeScreen = () => {
         {errors.length > 0 ? (
           <Message variant="danger">{errors}</Message>
         ) : (
-          <Row>
-            {products.map((product) => (
-              <Product key={product.id} product={product} />
-            ))}
-          </Row>
+          <div>
+            <Row>
+              {products.map((product) => (
+                <Product key={product.id} product={product} />
+              ))}
+            </Row>
+            <Paginate page={page} pages={pages} keyword={keyword} />
+          </div>
         )}
       </Suspense>
     </div>

@@ -19,7 +19,9 @@ export function productListReducer(state = initialState, action) {
     case PRODUCT_LIST_SUCCESS:
       return {
         ...state,
-        products: action.payload,
+        products: action.payload.products,
+        page: action.payload.page,
+        pages: action.payload.pages,
       };
     default:
       return state;

@@ -20,7 +20,6 @@ export const productList =
         payload: data,
       });
     } catch (error) {
-      console.log(error);
       dispatch({
         type: ERROR,
         payload:

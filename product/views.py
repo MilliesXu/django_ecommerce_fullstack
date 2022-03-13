@@ -3,6 +3,7 @@ from .models import Product, Review
 from .serializers import ProductSerializer, ReviewSerializer
 from .permissions import ProductPermission, ReviewPermission
 from rest_framework.response import Response
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 
@@ -14,7 +15,6 @@ class ProductListCreate(generics.ListCreateAPIView):
 
     def get_queryset(self):
         query = self.request.query_params.get('keyword')
-        print(query)
 
         if query != None:
             products = Product.objects.filter(name__icontains=query)
@@ -22,6 +22,32 @@ class ProductListCreate(generics.ListCreateAPIView):
             products = Product.objects.all()
 
         return products
+
+    def get(self, request, *args, **kwargs):
+        products = self.get_queryset()
+
+        page = self.request.query_params.get('page')
+        paginator = Paginator(products, 5)
+
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            products = paginator.page(1)
+        except EmptyPage:
+            products = paginator.page(paginator.num_pages)
+
+        if page == None:
+            page = 1
+
+        page = int(page)
+
+        serializer = ProductSerializer(products, many=True)
+
+        return Response({
+            'products': serializer.data,
+            'page': page,
+            'pages': paginator.num_pages,
+        })
 
     def post(self, request, *args, **kwargs):
         user = request.user
